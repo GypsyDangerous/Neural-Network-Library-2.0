@@ -1,2 +1,4 @@
 # Neural-Network-Library-2.0
-version 2.0 of my neural network library in python
+# Coming Soon
+
+![changelog](https://img.shields.io/badge/2.0-changelog-green.svg)
