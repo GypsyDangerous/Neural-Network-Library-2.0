@@ -103,7 +103,7 @@ class NeuralNetwork:
 		use the feedforward algorithm to get a guess from the network
 		'''
 		for i in range(self.size-1):
-			if i == 0:
+			if i == 0: # the input layer
 				inputlayer = self.layers[0]
 				inputlayer.values = np.array(inputs).reshape(inputlayer.nodes, 1)
 				
@@ -121,11 +121,10 @@ class NeuralNetwork:
 		if len(test_data) < len(test_labels):
 			raise Exception("Your have more test labels than data points")
 
-
 		'''
 		test the network over all the test data and print the accuracy
 		'''
-		datalen = len(test_data)
+		datalen = len(test_data) # 1
 		acc = 0
 		for i in range(datalen):
 			data = test_data[i]
@@ -134,7 +133,7 @@ class NeuralNetwork:
 			Guess = np.argmax(guess)
 			Label = np.argmax(label)
 			error = self.loss(label, guess)
-			if Guess == Label:
+			if Guess == Label: # if the network was correct
 				acc += 1
 			print(i, " error: %f, guess: %d, answer: %d, confidence %f" % (error, Guess, Label, guess[Guess])) # optional line for debugging
 		self.accuracy = percent(acc, datalen)
@@ -147,21 +146,20 @@ class NeuralNetwork:
 		if you dont have the "models" folder in your directory you will get an error
 		'''
 		np.savez_compressed(
-			file = os.path.join(os.curdir, 'models', filename),
-			layerinfo=self.layerinfo,
-			activations=self.activations,
-			size=self.size,
-			loss=self.loss,
-			layers=self.layers,
-            learning_rate=self.learning_rate,
-            epochs=self.epochs,
+		file = os.path.join(os.curdir, 'models', filename),
+		layerinfo=self.layerinfo,
+		activations=self.activations,
+		size=self.size,
+		loss=self.loss,
+		layers=self.layers,
+            	learning_rate=self.learning_rate,
+            	epochs=self.epochs,
             )
 
 
 	def load(self, filename='2model.npz'):
-		'''
-		load the saved parameters and hyperparameters to the network
-		'''
+		# load the saved parameters and hyperparameters to the network
+	
 		npz_members = np.load(os.path.join(os.curdir, 'models', filename))
 		self.lauerinfo = (npz_members['layerinfo'])
 		self.activations = (npz_members['activations'])
@@ -179,6 +177,6 @@ class NeuralNetwork:
 		targets = np.array(targets)
 		targets = targets.reshape(self.layers[-1].nodes, 1)
 		guess = self.process(inputs)
-		# for i in range()
+		
 
 	
