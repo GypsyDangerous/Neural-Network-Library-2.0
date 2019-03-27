@@ -5,14 +5,23 @@ a helper module for loss functions, more are going to be added.
 '''
 
 def cross_entropy(targets, guess):
-	entropy = 0
-	for i in range(len(targets)):
-		if targets[i] == 1:
-			entropy -= np.log(guess[i])
-		else:
-			entropy -= np.log(1 - guess[i])
-	return entropy[0]
+	return np.sum(targets * -np.log(guess))
+
+def cross_entropy_p(targets, guess):
+	return -np.sum(targets / guess)
 
 
 def mse(targets, guess):
-		return np.sum((targets-guess)**2)/len(targets)
+		return np.mean((targets-guess)**2)
+
+def mse_p(targets, guess):
+	return guess - targets
+
+
+if __name__ == "__main__":
+	test = np.array([0, 0, 0, 1, 0, 0])
+	other = np.array([0.01, 0, 0, 0.9, 0, 0])
+	test = test.reshape(6, 1)
+	other = other.reshape(6, 1)
+	print(other)
+	print(cross_entropy(test, other))
