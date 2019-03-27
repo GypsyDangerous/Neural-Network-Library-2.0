@@ -66,6 +66,8 @@ class NeuralNetwork:
 	def incEpochs(self, inc=1000):
 		self.epochs+=inc
 
+
+
 	# Work in Progress
 	def mutate(mr):
 		mutation_rate = mr
@@ -73,6 +75,14 @@ class NeuralNetwork:
 
 
 	def fit(self, inputArray, labels):
+
+		# error checking
+		if len(inputArray) > len(labels):
+			raise Exception("Your have more data points than labels")
+
+		if len(inputArray) < len(labels):
+			raise Exception("Your have more label points than data points")
+
 		'''
 		train the network over all the training data in a random order for self.epochs number 
 		of times
@@ -103,6 +113,15 @@ class NeuralNetwork:
 
 
 	def test(self, test_data, test_labels):
+
+		# error checking
+		if len(test_data) > len(test_labels):
+			raise Exception("Your have more test data points than labels")
+
+		if len(test_data) < len(test_labels):
+			raise Exception("Your have more test labels than data points")
+
+
 		'''
 		test the network over all the test data and print the accuracy
 		'''
@@ -117,7 +136,7 @@ class NeuralNetwork:
 			error = self.loss(label, guess)
 			if Guess == Label:
 				acc += 1
-			print(i, " error: %f, guess: %d, answer: %d" % (error, Guess, Label)) # optional line for debugging
+			print(i, " error: %f, guess: %d, answer: %d, confidence %f" % (error, Guess, Label, guess[Guess])) # optional line for debugging
 		self.accuracy = percent(acc, datalen)
 		print(self.accuracy, "%  accurate")
 
