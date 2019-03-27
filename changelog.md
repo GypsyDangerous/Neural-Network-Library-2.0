@@ -9,7 +9,6 @@
   * relu
 * added more loss functions and the ability to choose a loss a function
   * cross entropy
-  * MAE
   * fixed MSE
 * added mutation functions and other functions that aid the genetic algorithm
 * improved the backpropagation function
