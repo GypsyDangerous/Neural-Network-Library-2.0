@@ -20,7 +20,7 @@ def loadMNIST(prefix, folder):
 
 
 
-# convert the labels to hotencoding
+# convert the labels to onehotencoding
 def toHotEncoding(classification):
     # emulates the functionality of tf.keras.utils.to_categorical( y )
     hotEncoding = np.zeros([len(classification), 
