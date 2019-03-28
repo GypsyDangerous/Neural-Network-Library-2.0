@@ -10,4 +10,6 @@
 * loss.py - helper module for network loss functions
 * mnistdata.py - helper module for loading mnist data
 * mnist2_0.py - programing testing the network on mnist data
+* models - folder of saved models
+* dataset - folder of mnist dataset
 
