@@ -34,6 +34,11 @@ class NeuralNetwork:
 		self.layers = []
 		self.outputs = []
 		self.accuracy = 0
+		self.loss_p = loss
+		if self.loss == mse:
+			self.loss_p = mse_p
+		elif self.loss == cross_entropy:
+			self.loss_p = cross_entropy_p
 		
 		# initialize the networks layers
 		for i in range(self.size):
@@ -103,7 +108,7 @@ class NeuralNetwork:
 		use the feedforward algorithm to get a guess from the network
 		'''
 		for i in range(self.size-1):
-			if i == 0: # the input layer
+			if i == 0:
 				inputlayer = self.layers[0]
 				inputlayer.values = np.array(inputs).reshape(inputlayer.nodes, 1)
 				
@@ -121,23 +126,31 @@ class NeuralNetwork:
 		if len(test_data) < len(test_labels):
 			raise Exception("Your have more test labels than data points")
 
+
 		'''
 		test the network over all the test data and print the accuracy
 		'''
-		datalen = len(test_data) # 1
+		datalen = len(test_data)
+
 		acc = 0
 		for i in range(datalen):
 			data = test_data[i]
-			label = test_labels[i]
+			labellen = len(test_labels[i])
+			label = test_labels[i].reshape(labellen, 1)
 			guess = self.process(data)
 			Guess = np.argmax(guess)
 			Label = np.argmax(label)
 			error = self.loss(label, guess)
-			if Guess == Label: # if the network was correct
+			confidence = percent(guess[Guess], 1, 100)
+			verdict = ""
+			if Guess == Label:
 				acc += 1
-			print(i, " error: %f, guess: %d, answer: %d, confidence %f" % (error, Guess, Label, guess[Guess])) # optional line for debugging
+				verdict = "correct"
+			else:
+				verdict = "incorrect"
+			print(i, " error: %f, guess: %d, answer: %d, confidence: %a%%, verdict %s" % (error, Guess, Label, confidence, verdict)) # optional line for debugging
 		self.accuracy = percent(acc, datalen)
-		print(self.accuracy, "%  accurate")
+		print("accuracy: %a%%" %(self.accuracy))
 
 
 	def save(self, filename='2model.npz'):
@@ -146,20 +159,21 @@ class NeuralNetwork:
 		if you dont have the "models" folder in your directory you will get an error
 		'''
 		np.savez_compressed(
-		file = os.path.join(os.curdir, 'models', filename),
-		layerinfo=self.layerinfo,
-		activations=self.activations,
-		size=self.size,
-		loss=self.loss,
-		layers=self.layers,
-            	learning_rate=self.learning_rate,
-            	epochs=self.epochs,
+			file = os.path.join(os.curdir, 'models', filename),
+			layerinfo=self.layerinfo,
+			activations=self.activations,
+			size=self.size,
+			loss=self.loss,
+			layers=self.layers,
+            learning_rate=self.learning_rate,
+            epochs=self.epochs,
             )
 
 
 	def load(self, filename='2model.npz'):
-		# load the saved parameters and hyperparameters to the network
-	
+		'''
+		load the saved parameters and hyperparameters to the network
+		'''
 		npz_members = np.load(os.path.join(os.curdir, 'models', filename))
 		self.lauerinfo = (npz_members['layerinfo'])
 		self.activations = (npz_members['activations'])
@@ -174,9 +188,35 @@ class NeuralNetwork:
 		'''
 		attempting to implement backpropagation with gradient descent. I need help with this part
 		'''
-		targets = np.array(targets)
-		targets = targets.reshape(self.layers[-1].nodes, 1)
+		targets = np.array(targets).reshape(self.layers[-1].nodes, 1)
 		guess = self.process(inputs)
-		
+
+		for i in range(self.size-1, 0, -1):
+			
+			outputs = self.layers[i].values
+			error = self.loss_p(targets, outputs)
+
+			gradient = self.layers[i].activation_p(outputs)
+			gradient *= error
+			gradient *= self.learning_rate
+
+
+			modifiying = self.layers[i]
+
+			delta = np.dot(gradient, modifiying.values.T)
+
+			modifiying.biases += gradient
+			modifiying.weights += delta
+
+			temp = modifiying.weights.T
+			temp = np.dot(temp, error)
+			temp += modifiying.values
+			targets = temp
+			
+
+
+
+
+
 
 	
