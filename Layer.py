@@ -20,6 +20,17 @@ class layer:
 		self.inputs = inputs
 		self.nodes = nodes
 		self.activation = activation
+		self.activation_p = activation
+		
+		if self.activation == sigmoid:
+			self.activation_p = sigmoid_p
+		elif self.activation == softmax or self.activation == stable_softmax:
+			self.activation_p = softmax_p
+		elif self.activation == tanh:
+			self.activation_p = tanh_p
+		elif self.activation == relu:
+			self.activation_p = relu_p
+
 		self.weights = 2*np.random.rand(self.nodes, self.inputs)-1
 		self.biases = 2*np.random.rand(self.nodes, 1)-1
 		self.values = np.zeros(self.nodes)
