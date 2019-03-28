@@ -32,6 +32,7 @@ activations = [sigmoid, tanh, tanh, tanh, tanh, softmax]
 brain = NeuralNetwork(layers, activations, loss=cross_entropy)
 # brain.load()
 brain.test(testImages, testLabels)
+# brain.train(trainingImages[0], trainingLabels[0])
 # brain.save()
 
 
