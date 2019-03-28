@@ -31,3 +31,19 @@ def relu(x):
 def relu_p(x):
 	return float(x > 0)
 
+def leaky_relu(x):
+	return np.maximum(x, .1*x)
+
+def leaky_relu_p(x):
+	return float(x > .1)
+
+def softplus(x):
+	return np.log(1+np.exp(x))
+
+def softplus_p(x):
+	return sigmoid(x)
+
+	
+
+
+
