@@ -8,6 +8,7 @@
 * Layer.py - the networks layer class
 * activations.py - helper module for network activation functions
 * loss.py - helper module for network loss functions
+* misc.py - helper module for miscellaneous functions
 * mnistdata.py - helper module for loading mnist data
 * mnist2_0.py - programing testing the network on mnist data
 * models - folder of saved models
